@@ -41,21 +41,29 @@
       name="All"
       color="text-gray-800"
       darkColor="dark:text-gray-100"
+      background="bg-zinc-700"
+      darkBackground="dark:bg-zinc-100"
     />
     <CategoryButton
       name="Past due time"
       color="text-red-500"
       darkColor="dark:text-red-400"
+      background="bg-red-500"
+      darkBackground="dark:text-red-400"
     />
     <CategoryButton
       name="Important"
       color="text-orange-400"
       darkColor="dark:text-orange-400"
+      background="bg-orange-400"
+      darkBackground="dark:text-orange-400"
     />
     <CategoryButton
       name="Today"
       color="text-teal-700"
       darkColor="dark:text-teal-500"
+      background="bg-teal-700"
+      darkBackground="dark:bg-teal-500"
     />
   </nav>
   <main

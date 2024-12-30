@@ -6,6 +6,7 @@
     BaseDirectory,
   } from "@tauri-apps/plugin-fs";
   import CategoryButton from "./category-button.svelte";
+  import { store } from "./stores.svelte";
 
   let todosFile: string;
   let todos = $state([]);
@@ -32,14 +33,14 @@
 </script>
 
 <div class="grid grid-cols-3 *:font-sans lg:grid-cols-5 2xl:grid-cols-7">
-  <nav class="h-dvh bg-zinc-200 flex flex-col *:text-left dark:bg-zinc-600">
-    <h1 class="text-2xl text-zinc-700 font-bold m-3 dark:text-zinc-50">
+  <nav class="h-dvh bg-zinc-300 flex flex-col *:text-left dark:bg-zinc-600">
+    <h1 class="text-2xl text-slate-700 font-bold m-3 dark:text-slate-50">
       Todos
     </h1>
     <CategoryButton
       name="All"
-      color="text-zinc-800"
-      darkColor="dark:text-zinc-100"
+      color="text-slate-800"
+      darkColor="dark:text-slate-100"
     />
     <CategoryButton
       name="Past due time"
@@ -57,15 +58,29 @@
       darkColor="dark:text-teal-500"
     />
   </nav>
-  <main class="col-span-2 h-dvh lg:col-span-4 2xl:col-span-6 dark:bg-zinc-700">
-    {#each todos as todo}
-      <!-- content here -->
-    {:else}
-      <p
-        class="m-4 text-zinc-700 font-sans dark:text-zinc-50 text-center text-xl"
-      >
-        No todos yet!
-      </p>
-    {/each}
+  <main
+    class="col-span-2 h-dvh lg:col-span-4 2xl:col-span-6 bg-zinc-50 dark:bg-zinc-700 grid grid-rows-[3.75rem_1fr] grid-cols-[3.25rem_1fr_3.25rem]"
+  >
+    <h2
+      class="m-4 text-slate-700 font-sans dark:text-slate-50 text-center text-xl row-start-1 col-start-2"
+    >
+      {store.currentCategory}
+    </h2>
+    <button
+      aria-label="Create new reminder"
+      title="Create new reminder"
+      class="rounded h-9 w-9 m-2 self-center col-start-3 hover:bg-zinc-200 hover:dark:bg-zinc-600 transition"
+    >
+      <svg
+        viewBox="0 0 33 33"
+        class="stroke-slate-700 dark:stroke-slate-50 h-5 w-5 m-2 stroke-[0.25rem]"
+        ><line x1="16" y1="2" x2="16" y2="31" /><line
+          x1="2"
+          y1="16"
+          x2="31"
+          y2="16"
+        /></svg
+      ></button
+    >
   </main>
 </div>

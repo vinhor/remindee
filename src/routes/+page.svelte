@@ -10,6 +10,7 @@
 
   let todosFile: string;
   let todos = $state([]);
+  let modalOpened = $state(false);
   onMount(() => {
     readFile();
   });
@@ -29,6 +30,10 @@
     await writeTextFile("todorem.json", JSON.stringify(todos), {
       baseDir: BaseDirectory.AppLocalData,
     });
+  };
+
+  const modalVisibility = () => {
+    return modalOpened ? "grid" : "hidden";
   };
 </script>
 
@@ -78,17 +83,44 @@
       aria-label="Create new reminder"
       title="Create new reminder"
       class="rounded h-9 w-9 m-2 self-center col-start-3 hover:bg-zinc-200 hover:dark:bg-zinc-600 transition"
+      onclick={() => (modalOpened = true)}
     >
       <svg
-        viewBox="0 0 33 33"
+        viewBox="0 0 32 32"
         class="stroke-gray-700 dark:stroke-gray-50 h-5 w-5 m-2 stroke-[0.25rem]"
-        ><line x1="16" y1="2" x2="16" y2="31" /><line
+        ><line x1="16" y1="2" x2="16" y2="30" /><line
           x1="2"
           y1="16"
-          x2="31"
+          x2="30"
           y2="16"
         /></svg
       ></button
     >
   </main>
 </div>
+<!-- Modal window -->
+<div
+  class={"top-0 left-0 w-full h-full fixed bg-[rgba(0,_0,_0,_0.35)] " +
+    modalVisibility()}
+>
+  <div
+    class="justify-self-center self-center text-white bg-zinc-50 dark:bg-zinc-700"
+  >
+    <button
+      aria-label="Save the reminder"
+      title="Save the reminder"
+      onclick={() => (modalOpened = false)}
+      ><svg
+        viewBox="0 0 48 32"
+        class="stroke-white stroke-[0.25rem] h-7 w-7 m-2"
+        ><line x1="2" y1="16" x2="16" y2="30" /><line
+          x1="16"
+          y1="30"
+          x2="46"
+          y2="2"
+        /></svg
+      ></button
+    >
+  </div>
+</div>
+{modalOpened}

@@ -12,7 +12,7 @@
 
   const decideTheme = () => {
     if (store.currentCategory === name) {
-      return `text-gray-50 cursor-auto dark:text-zinc-700 cursor-default ${background} ${darkBackground}`;
+      return `text-zinc-50 cursor-auto dark:text-zinc-700 cursor-default ${background} ${darkBackground}`;
     } else {
       return `${color} ${darkColor} hover:bg-zinc-50 hover:dark:bg-zinc-700 cursor-pointer`;
     }

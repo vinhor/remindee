@@ -23,9 +23,11 @@
     isImportant: z.boolean(),
     category: z.string().optional(),
     wantsDate: z.boolean(),
-    wantsTime: z.boolean(),
-    dueDate: z.string().optional(),
-    dueTime: z.string().optional(),
+    dueDate: z.string().date().or(z.literal("")).optional(),
+    dueTime: z
+      .string()
+      .regex(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/) // regex for HH:mm format
+      .or(z.literal("")),
   });
 
   const { form, errors, touched, data } = createForm({
@@ -112,7 +114,7 @@
 {#if modalOpened}
   <div class="top-0 left-0 w-full h-full fixed bg-[rgba(0,_0,_0,_0.35)] grid">
     <form
-      class="justify-self-center self-center bg-zinc-50 dark:bg-zinc-700 rounded grid grid-cols-2 grid-rows-[4.75rem_1fr] text-zinc-700 dark:text-zinc-50 text-lg"
+      class="justify-self-center self-center bg-zinc-50 dark:bg-zinc-700 rounded grid grid-cols-2 grid-rows-[4.75rem_1fr] text-zinc-700 dark:text-zinc-50 text-lg w-11/12 md:w-2/3 lg:w-1/3 min-w-fit"
       use:form
     >
       <h2
@@ -123,14 +125,13 @@
       <div
         class="*:font-sans col-span-2 *:text-zinc-700 *:dark:text-zinc-50 flex items-center"
       >
-        <label for="title" class="m-2"> Title: </label>
+        <label for="title" class="m-2"> Title:</label>
         <input
           type="text"
           name="title"
           class="border-b-2 m-1 bg-zinc-50 dark:bg-zinc-700 focus:dark:bg-zinc-800 focus:bg-zinc-200 hover:bg-zinc-200 hover:dark:bg-zinc-800
            transition px-1 outline-none flex-grow"
           class:border-red-500={$touched.title && $errors.title}
-          class:dark:border-zinc-50={!$errors.title}
         />
       </div>
       <div class="col-span-2 inline-flex items-center">
@@ -143,8 +144,8 @@
       </div>
       <div class="col-span-2 inline-flex items-center">
         <label for="wants-date" class="m-2"
-          >Do you want to set a due date?
-        </label>
+          >Do you want to set a due date?</label
+        >
         <CustomCheckbox
           value={$data.wantsDate}
           inputId="wants-date"
@@ -152,20 +153,36 @@
         />
       </div>
       {#if $data.wantsDate}
-        <div class="col-span-2 inline-flex items-center">
-          <label for="wants-time" class="m-2"
-            >Do you want to set a precise time?
-          </label><CustomCheckbox
-            value={$data.wantsTime}
-            inputId="wants-time"
-            inputName="wantsTime"
+        <div class="col-span-2 *:font-sans flex items-center">
+          <label for="due-date" class="m-2">Date:</label>
+          <input
+            type="text"
+            name="dueDate"
+            id="due-date"
+            class="bg-zinc-50 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-50 focus:dark:bg-zinc-800 focus:bg-zinc-200 hover:bg-zinc-200 hover:dark:bg-zinc-800
+              transition px-1 outline-none w-40 border-b-2 m-1"
+            class:border-red-500={$touched.dueDate && $errors.dueDate}
+            value="2024-12-31"
           />
+          {#if $errors.dueDate}
+            <p class="text-red-500 font-semibold mx-2">Use YYYY-MM-DD</p>
+          {/if}
         </div>
-        <div class="col-span-2">
-          <input type="date" name="dueDate" id="due-date" />
-        </div>
-        <div class="col-span-2">
-          <input type="time" name="dueTime" id="due-time" />
+        <div class="col-span-2 *:font-sans flex items-center">
+          <label for="due-time" class="m-2">Time:</label>
+          <input
+            type="text"
+            name="dueTime"
+            id="due-time"
+            class=" bg-zinc-50 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-50 focus:dark:bg-zinc-800 focus:bg-zinc-200 hover:bg-zinc-200 hover:dark:bg-zinc-800
+              transition px-1 outline-none w-40 border-b-2 m-1"
+            class:border-red-500={$touched.dueTime && $errors.dueTime}
+          />
+          {#if $errors.dueTime}
+            <p class="text-red-500 font-semibold mx-2">
+              Use HH:mm (24-hour format)
+            </p>
+          {/if}
         </div>
       {/if}
     </form>

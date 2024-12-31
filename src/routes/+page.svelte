@@ -7,26 +7,47 @@
   } from "@tauri-apps/plugin-fs";
   import CategoryButton from "./category-button.svelte";
   import { store } from "./stores.svelte";
+  import { z } from "zod";
+  import { createForm } from "felte";
+  import { validator } from "@felte/validator-zod";
 
   let todosFile: string;
   let todos = $state([]);
   let modalOpened = $state(false);
-  onMount(() => {
-    readFile();
+
+  let foo: string = $state("");
+
+  const schema = z.object({
+    title: z.string().nonempty(),
+    /*     isImportant: z.boolean(),
+    category: z.string().optional(),
+    due: z.string().datetime().optional(), */
   });
 
-  const readFile = async () => {
+  const { form, errors, touched } = createForm({
+    extend: validator({ schema }),
+    onSubmit: (values) => {
+      foo = JSON.stringify(values);
+      modalOpened = false;
+    },
+  });
+
+  onMount(() => {
+    readTodos();
+  });
+
+  const readTodos = async () => {
     try {
       todosFile = await readTextFile("todorem.json", {
         baseDir: BaseDirectory.AppLocalData,
       });
       todos = JSON.parse(todosFile);
     } catch {
-      await writeFile();
+      await writeTodos();
       todos = [];
     }
   };
-  const writeFile = async () => {
+  const writeTodos = async () => {
     await writeTextFile("todorem.json", JSON.stringify(todos), {
       baseDir: BaseDirectory.AppLocalData,
     });
@@ -103,16 +124,23 @@
   class={"top-0 left-0 w-full h-full fixed bg-[rgba(0,_0,_0,_0.35)] " +
     modalVisibility()}
 >
-  <div
-    class="justify-self-center self-center text-white bg-zinc-50 dark:bg-zinc-700"
+  <form
+    class="justify-self-center self-center bg-zinc-50 dark:bg-zinc-700 rounded grid grid-cols-2 grid-rows-[4.75rem_1fr]"
+    use:form
   >
+    <h2
+      class="font-sans text-xl m-4 self-center text-gray-700 dark:text-gray-50"
+    >
+      Create new reminder
+    </h2>
     <button
       aria-label="Save the reminder"
       title="Save the reminder"
-      onclick={() => (modalOpened = false)}
+      type="submit"
+      class="col-start-2 w-fit justify-self-end m-4 self-center p-2 rounded hover:bg-zinc-200 hover:dark:bg-zinc-600 transition"
       ><svg
         viewBox="0 0 48 32"
-        class="stroke-white stroke-[0.25rem] h-7 w-7 m-2"
+        class="stroke-gray-700 dark:stroke-gray-50 stroke-[0.25rem] h-7 w-7"
         ><line x1="2" y1="16" x2="16" y2="30" /><line
           x1="16"
           y1="30"
@@ -121,6 +149,11 @@
         /></svg
       ></button
     >
-  </div>
+    <input
+      type="text"
+      name="title"
+      class="border-2 {$touched.title && $errors.title ? 'border-red-500' : ''}"
+    />
+  </form>
 </div>
-{modalOpened}
+{foo}

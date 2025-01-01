@@ -142,8 +142,11 @@
         <input
           type="text"
           name="title"
-          class="border-b-2 m-1 bg-zinc-50 dark:bg-zinc-600
-           transition px-1 outline-none flex-grow"
+          class="border-b-2 m-1 bg-zinc-100 dark:bg-zinc-600
+           transition px-1 outline-none flex-grow {$touched.title &&
+          $errors.title
+            ? ''
+            : 'border-zinc-700 dark:border-zinc-50'}"
           class:border-red-500={$touched.title && $errors.title}
         />
       </div>
@@ -172,8 +175,11 @@
             type="text"
             name="dueDate"
             id="due-date"
-            class="bg-zinc-50 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-50
-              transition px-1 outline-none w-40 border-b-2 m-1"
+            class="bg-zinc-100 dark:bg-zinc-600
+              transition px-1 outline-none w-40 border-b-2 m-1 text-zinc-700 dark:text-zinc-50 {$touched.dueDate &&
+            $errors.dueDate
+              ? ''
+              : 'border-zinc-700 dark:border-zinc-50'}"
             class:border-red-500={$touched.dueDate && $errors.dueDate}
             value="2024-12-31"
           />
@@ -187,8 +193,11 @@
             type="text"
             name="dueTime"
             id="due-time"
-            class=" bg-zinc-50 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-50
-              transition px-1 outline-none w-40 border-b-2 m-1"
+            class=" bg-zinc-100 dark:bg-zinc-600
+              transition px-1 outline-none w-40 border-b-2 m-1 text-zinc-700 dark:text-zinc-50 {$touched.dueTime &&
+            $errors.dueTime
+              ? ''
+              : 'border-zinc-700 dark:border-zinc-50'}"
             class:border-red-500={$touched.dueTime && $errors.dueTime}
           />
           {#if $errors.dueTime}
@@ -199,7 +208,7 @@
         </div>
       {/if}
       <button
-        class="bg-zinc-50 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-50 rounded px-8 py-2 w-fit hover:dark:bg-zinc-800 transition duration-300"
+        class="bg-zinc-100 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-50 rounded px-8 py-2 w-fit hover:bg-zinc-200 hover:dark:bg-zinc-700 transition duration-300"
         type="button"
         onclick={() => (modalOpened = !modalOpened)}>Cancel</button
       >

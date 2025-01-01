@@ -7,7 +7,7 @@
   type="checkbox"
   name={inputName}
   id={inputId}
-  class="appearance-none w-5 h-5 bg-zinc-50 cursor-pointer rounded checked:bg-sky-600"
+  class="appearance-none w-5 h-5 bg-zinc-50 cursor-pointer rounded checked:bg-sky-600 border-zinc-600 border checked:border-0"
 />
 <svg
   viewBox="0 0 10 10"

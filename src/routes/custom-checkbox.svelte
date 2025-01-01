@@ -7,7 +7,7 @@
   type="checkbox"
   name={inputName}
   id={inputId}
-  class="appearance-none w-5 h-5 bg-red-500 cursor-pointer rounded checked:bg-green-500"
+  class="appearance-none w-5 h-5 bg-zinc-50 cursor-pointer rounded checked:bg-sky-600"
 />
 <svg
   viewBox="0 0 10 10"
@@ -15,8 +15,5 @@
 >
   {#if value}
     <line x1="1" y1="7" x2="4" y2="9" /><line x1="4" y1="9" x2="9" y2="1" />
-  {:else}
-    <line x1="1" y1="1" x2="9" y2="9" />
-    <line x1="9" y1="1" x2="1" y2="9" />
   {/if}
 </svg>

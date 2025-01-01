@@ -12,29 +12,40 @@
   import { validator } from "@felte/validator-zod";
   import CustomCheckbox from "./custom-checkbox.svelte";
 
+  type todo = {
+    title: string;
+    isImportant: boolean;
+    category?: string;
+    dueDate?: string;
+    dueTime?: string;
+  };
+
   let todosFile: string;
-  let todos = $state([]);
+  let todos: todo[] | string[] = $state([]);
   let modalOpened = $state(false);
 
-  let foo: string = $state("");
+  let saveButtonContent = $state("Save");
 
   const schema = z.object({
     title: z.string().nonempty(),
     isImportant: z.boolean(),
     category: z.string().optional(),
-    wantsDate: z.boolean(),
     dueDate: z.string().date().or(z.literal("")).optional(),
     dueTime: z
       .string()
       .regex(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/) // regex for HH:mm format
-      .or(z.literal("")),
+      .or(z.literal(""))
+      .optional(),
   });
 
   const { form, errors, touched, data } = createForm({
     extend: validator({ schema }),
-    onSubmit: (values) => {
-      foo = JSON.stringify(values);
+    onSubmit: async (values) => {
+      saveButtonContent = "Saving...";
+      todos.push(values);
+      await writeTodos();
       modalOpened = false;
+      saveButtonContent = "Save";
     },
   });
 
@@ -44,7 +55,7 @@
 
   const readTodos = async () => {
     try {
-      todosFile = await readTextFile("todorem.json", {
+      todosFile = await readTextFile("remindee.json", {
         baseDir: BaseDirectory.AppLocalData,
       });
       todos = JSON.parse(todosFile);
@@ -54,7 +65,7 @@
     }
   };
   const writeTodos = async () => {
-    await writeTextFile("todorem.json", JSON.stringify(todos), {
+    await writeTextFile("remindee.json", JSON.stringify(todos), {
       baseDir: BaseDirectory.AppLocalData,
     });
   };
@@ -62,7 +73,9 @@
 
 <div class="grid grid-cols-3 *:font-sans lg:grid-cols-5 2xl:grid-cols-7">
   <nav class="h-dvh bg-zinc-300 flex flex-col *:text-left dark:bg-zinc-600">
-    <h1 class="text-2xl text-zinc-700 font-bold m-3 dark:text-zinc-50">
+    <h1
+      class="text-3xl text-zinc-700 font-bold m-3 dark:text-zinc-50 font-sans"
+    >
       Todos
     </h1>
     <CategoryButton
@@ -114,11 +127,11 @@
 {#if modalOpened}
   <div class="top-0 left-0 w-full h-full fixed bg-[rgba(0,_0,_0,_0.35)] grid">
     <form
-      class="justify-self-center self-center bg-zinc-50 dark:bg-zinc-700 rounded grid grid-cols-2 grid-rows-[4.75rem_1fr] text-zinc-700 dark:text-zinc-50 text-lg w-11/12 md:w-2/3 lg:w-1/3 min-w-fit"
+      class="justify-self-center self-center bg-zinc-100 dark:bg-zinc-600 rounded-xl grid grid-cols-2 text-zinc-700 dark:text-zinc-50 text-lg w-11/12 md:w-2/3 lg:w-1/3 min-w-fit p-3"
       use:form
     >
       <h2
-        class="font-sans text-xl m-4 self-center text-zinc-700 dark:text-zinc-50"
+        class="font-sans text-2xl m-2 self-center text-zinc-700 dark:text-zinc-50"
       >
         Create new reminder
       </h2>
@@ -129,13 +142,13 @@
         <input
           type="text"
           name="title"
-          class="border-b-2 m-1 bg-zinc-50 dark:bg-zinc-700 focus:dark:bg-zinc-800 focus:bg-zinc-200 hover:bg-zinc-200 hover:dark:bg-zinc-800
+          class="border-b-2 m-1 bg-zinc-50 dark:bg-zinc-600
            transition px-1 outline-none flex-grow"
           class:border-red-500={$touched.title && $errors.title}
         />
       </div>
       <div class="col-span-2 inline-flex items-center">
-        <label for="is-important" class="m-2"> Is it important? </label>
+        <label for="is-important" class="m-2">Is it important?</label>
         <CustomCheckbox
           value={$data.isImportant}
           inputId="is-important"
@@ -159,7 +172,7 @@
             type="text"
             name="dueDate"
             id="due-date"
-            class="bg-zinc-50 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-50 focus:dark:bg-zinc-800 focus:bg-zinc-200 hover:bg-zinc-200 hover:dark:bg-zinc-800
+            class="bg-zinc-50 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-50
               transition px-1 outline-none w-40 border-b-2 m-1"
             class:border-red-500={$touched.dueDate && $errors.dueDate}
             value="2024-12-31"
@@ -174,7 +187,7 @@
             type="text"
             name="dueTime"
             id="due-time"
-            class=" bg-zinc-50 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-50 focus:dark:bg-zinc-800 focus:bg-zinc-200 hover:bg-zinc-200 hover:dark:bg-zinc-800
+            class=" bg-zinc-50 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-50
               transition px-1 outline-none w-40 border-b-2 m-1"
             class:border-red-500={$touched.dueTime && $errors.dueTime}
           />
@@ -185,7 +198,16 @@
           {/if}
         </div>
       {/if}
+      <button
+        class="bg-zinc-50 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-50 rounded px-8 py-2 w-fit hover:dark:bg-zinc-800 transition duration-300"
+        type="button"
+        onclick={() => (modalOpened = !modalOpened)}>Cancel</button
+      >
+      <button
+        class="bg-sky-600 text-zinc-50 rounded hover:bg-sky-700 transition duration-300 px-8 py-2"
+        type="submit">{saveButtonContent}</button
+      >
     </form>
   </div>
 {/if}
-{foo}
+{JSON.stringify(todos)}

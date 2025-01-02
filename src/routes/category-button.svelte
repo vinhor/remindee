@@ -28,6 +28,6 @@
 </script>
 
 <button
-  class={`font-bold p-2 indent-1 m-1 ml-2 mr-2 rounded transition ${decideTheme()}`}
+  class={`font-bold p-2 m-1 ml-3 mr-2 rounded transition ${decideTheme()}`}
   onclick={() => handleClick()}>{name}</button
 >

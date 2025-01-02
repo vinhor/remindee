@@ -67,11 +67,13 @@
 </script>
 
 <div class="grid grid-cols-3 *:font-sans lg:grid-cols-5 2xl:grid-cols-7">
-  <nav class="h-dvh bg-zinc-300 flex flex-col *:text-left dark:bg-zinc-600">
+  <nav
+    class="h-dvh bg-zinc-300 flex flex-col *:text-left dark:bg-zinc-600 overflow-scroll"
+  >
     <h1
       class="text-3xl text-zinc-700 font-bold m-3 dark:text-zinc-50 font-sans"
     >
-      Todos
+      Reminders
     </h1>
     <CategoryButton
       name="All"
@@ -124,15 +126,15 @@
     />
   </nav>
   <main
-    class="col-span-2 h-dvh lg:col-span-4 2xl:col-span-6 bg-zinc-50 dark:bg-zinc-700 grid grid-rows-[3.75rem_1fr] grid-cols-[10em_1fr_10em]"
+    class="col-span-2 h-dvh lg:col-span-4 2xl:col-span-6 bg-zinc-50 dark:bg-zinc-700 grid grid-rows-[3.75rem_1fr] grid-cols-[1fr_12em] md:grid-cols-[12em_1fr_12em] overflow-scroll"
   >
     <h2
-      class="m-4 text-zinc-700 font-sans dark:text-zinc-50 text-center text-xl row-start-1 col-start-2"
+      class="m-4 text-zinc-700 font-sans dark:text-zinc-50 text-center text-xl row-start-1 col-start-1 md:col-start-2"
     >
       {store.currentCategory}
     </h2>
     <button
-      class="rounded p-2 text-zinc-50 font-semibold dark:text-zinc-700 m-2 col-start-3 bg-zinc-700 dark:bg-zinc-50 hover:dark:bg-zinc-200 hover:bg-zinc-600 transition"
+      class="rounded p-2 text-zinc-50 font-semibold dark:text-zinc-700 m-2 col-start-2 md:col-start-3 bg-zinc-700 dark:bg-zinc-50 hover:dark:bg-zinc-200 hover:bg-zinc-600 transition"
       onclick={() => (modalOpened = true)}
     >
       New reminder

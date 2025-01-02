@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@felte/validator-zod':
-        specifier: ^1.0.18
-        version: 1.0.18(zod@3.24.1)
+      '@felte/validator-vest':
+        specifier: ^1.0.17
+        version: 1.0.17(vest@5.4.6)
       '@tauri-apps/api':
         specifier: ^2
         version: 2.1.1
@@ -23,9 +23,9 @@ importers:
       felte:
         specifier: ^1.3.0
         version: 1.3.0(svelte@5.16.0)
-      zod:
-        specifier: ^3.24.1
-        version: 3.24.1
+      vest:
+        specifier: ^5.4.6
+        version: 5.4.6
     devDependencies:
       '@sveltejs/adapter-static':
         specifier: ^3.0.6
@@ -229,11 +229,11 @@ packages:
     resolution: {integrity: sha512-qXEofmfc0tKvd1MOP9T1ixoI4+u0ZcUtC7JpBfb2A/lr/mhc8HrkvVWGatrGBnNovTc4lgIKWOySVVFswa4BYg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  '@felte/validator-zod@1.0.18':
-    resolution: {integrity: sha512-nLhy3qhCrL14iMxIHXtIH0MckZr/dmpqRd/KcqQ6HJoT2tjvv8gPpgOGJdOR15Wfzd25n/UUr3tyX7ydgXA5xQ==}
+  '@felte/validator-vest@1.0.17':
+    resolution: {integrity: sha512-l5TdfqLjUobswu0Gf4D5SwrWDSqSOgrihsrFZ8XAYTfGLfrTIKZrGCPiN0OeR+LZCH/ZAx/sUckI2MbDAP4VjA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     peerDependencies:
-      zod: ^3.2.0
+      vest: ^4.0.1
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -580,6 +580,9 @@ packages:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
 
+  context@3.0.33:
+    resolution: {integrity: sha512-9nBbXhHVKRFLYKk3oa7W+aHt/eiGm5aIMp4Y4IwQsiAO+deRtlJ72EA8m7Cvs3v7gjjBuqKljvt2eyihVHUJoQ==}
+
   cookie@0.6.0:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
     engines: {node: '>= 0.6'}
@@ -793,6 +796,9 @@ packages:
 
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
+
+  n4s@5.0.28:
+    resolution: {integrity: sha512-64ap7Qn8Oyua2ImIZH6/pkql89qyiTZ4jJqpS2g863++0tgbM4cuv3KJvZqMpa8kY2ovZ4q3cD0/KU4SImjg5g==}
 
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
@@ -1023,6 +1029,18 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  vast@1.0.42:
+    resolution: {integrity: sha512-YP3zNDRVZZRuHgUJ5xD7HAF0AFius2KWqIYSAuzA6E4ftPkL+gSQrp9agPM1HgsHS9L7XWoegYxsH81kawztuQ==}
+
+  vest-utils@1.3.3:
+    resolution: {integrity: sha512-9y+26YXjOpv89QmEXlFrTFLUMwUjAuwpimUVgb8HS3eNuBR3HEY68o4U/sPyGTh3OEvS7N502pX82WDm1zvsaA==}
+
+  vest@5.4.6:
+    resolution: {integrity: sha512-Q3KQYluxdjnz5/HmR8coHNlXbJPLWMfrwz4wlcqMX4SaJ8qcmy5Ix9NTiQt3hTMrETdj+q+513J/kt+ahdJlLg==}
+
+  vestjs-runtime@1.5.1:
+    resolution: {integrity: sha512-kiXuNJBS/6ZkzMArLuiEBtXe/cMr/8NE4lp6flpLuEzVwXM2nli9UfvQ26lmuvU1/ggPgjJNv/FpSnWofvHYcA==}
+
   vite@6.0.6:
     resolution: {integrity: sha512-NSjmUuckPmDU18bHz7QZ+bTYhRR0iA72cs2QAxCqDpafJ0S6qetco0LB3WW2OxlMHS0JmAv+yZ/R3uPmMyGTjQ==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -1091,9 +1109,6 @@ packages:
 
   zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
-
-  zod@3.24.1:
-    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
 
 snapshots:
 
@@ -1185,10 +1200,10 @@ snapshots:
     dependencies:
       '@felte/common': 1.1.9
 
-  '@felte/validator-zod@1.0.18(zod@3.24.1)':
+  '@felte/validator-vest@1.0.17(vest@5.4.6)':
     dependencies:
       '@felte/common': 1.1.9
-      zod: 3.24.1
+      vest: 5.4.6
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -1479,6 +1494,10 @@ snapshots:
 
   commander@4.1.1: {}
 
+  context@3.0.33:
+    dependencies:
+      vest-utils: 1.3.3
+
   cookie@0.6.0: {}
 
   cross-spawn@7.0.6:
@@ -1677,6 +1696,11 @@ snapshots:
       any-promise: 1.3.0
       object-assign: 4.1.1
       thenify-all: 1.6.0
+
+  n4s@5.0.28:
+    dependencies:
+      context: 3.0.33
+      vest-utils: 1.3.3
 
   nanoid@3.3.8: {}
 
@@ -1936,6 +1960,25 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
+  vast@1.0.42:
+    dependencies:
+      vest-utils: 1.3.3
+
+  vest-utils@1.3.3: {}
+
+  vest@5.4.6:
+    dependencies:
+      context: 3.0.33
+      n4s: 5.0.28
+      vast: 1.0.42
+      vest-utils: 1.3.3
+      vestjs-runtime: 1.5.1
+
+  vestjs-runtime@1.5.1:
+    dependencies:
+      context: 3.0.33
+      vest-utils: 1.3.3
+
   vite@6.0.6(jiti@1.21.7)(yaml@2.6.1):
     dependencies:
       esbuild: 0.24.2
@@ -1969,5 +2012,3 @@ snapshots:
   yaml@2.6.1: {}
 
   zimmerframe@1.1.2: {}
-
-  zod@3.24.1: {}

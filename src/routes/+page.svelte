@@ -1,39 +1,45 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import {
-    writeTextFile,
-    readTextFile,
-    BaseDirectory,
-  } from "@tauri-apps/plugin-fs";
-  import CategoryButton from "./category-button.svelte";
-  import { store, filterTodos } from "./stores.svelte";
-  import { z } from "zod";
+  import { readTextFile, BaseDirectory } from "@tauri-apps/plugin-fs";
+  import type { Todo } from "./stores.svelte";
+  import { store, filterTodos, writeTodos } from "./stores.svelte";
   import { createForm } from "felte";
-  import { validator } from "@felte/validator-zod";
+  import { validator } from "@felte/validator-vest";
+  import { create, test, enforce } from "vest";
   import TodoItem from "./todo-item.svelte";
   import CustomCheckbox from "./custom-checkbox.svelte";
+  import CategoryButton from "./category-button.svelte";
 
   let todosFile: string;
   let modalOpened = $state(false);
   let time = new Date();
   let saveButtonContent = $state("Save");
 
-  const schema = z.object({
-    title: z.string().nonempty(),
-    isImportant: z.boolean(),
-    category: z.string().optional(),
-    wantsDate: z.boolean(),
-    dueDate: z.string().date().or(z.literal("")).optional(),
-    dueTime: z
-      .string()
-      .regex(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/) // regex for HH:mm format
-      .or(z.literal(""))
-      .optional(),
+  const suite = create((data: Todo) => {
+    test("title", "Title cannot be blank", () => {
+      enforce(data.title).isNotBlank();
+    });
+
+    test("due_date", "Isn't in YYYY-MM-DD", () => {
+      if (data.dueDate === undefined || data.dueDate === null) return true;
+      enforce(data.dueDate).isDate({ format: "YYYY-MM-DD" });
+    });
+
+    test("due_time", "Use HH:mm", () => {
+      if (data.dueDate === undefined || data.dueDate === null) return true;
+      enforce(data.dueTime).matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/);
+    });
+
+    test("duplicates", "No duplicates", () => {
+      return !store.todos.some(
+        (todo) => JSON.stringify(todo) === JSON.stringify(data)
+      );
+    });
   });
 
   const { form, errors, touched, data } = createForm({
-    extend: validator({ schema }),
-    onSubmit: async (values) => {
+    extend: validator({ suite }),
+    onSubmit: async (values: Todo) => {
       saveButtonContent = "Saving...";
       store.todos.push(values);
       await writeTodos();
@@ -58,11 +64,6 @@
       await writeTodos();
       store.todos = [];
     }
-  };
-  const writeTodos = async () => {
-    await writeTextFile("remindee.json", JSON.stringify(store.todos), {
-      baseDir: BaseDirectory.AppLocalData,
-    });
   };
 </script>
 
@@ -140,11 +141,11 @@
       New reminder
     </button>
     {#if store.filteredTodos.length > 0}
-      {#each store.filteredTodos as filteredTodo}
-        <ol>
-          <TodoItem todoData={filteredTodo} />
-        </ol>
-      {/each}
+      <ol class="w-full col-start-1 col-span-2 sm:col-span-3 flex flex-col">
+        {#each store.filteredTodos as _, todoIndex}
+          <TodoItem index={todoIndex} />
+        {/each}
+      </ol>
     {:else}
       No reminders
       {store.filteredTodos.length}
@@ -245,6 +246,8 @@
         class="bg-sky-600 text-zinc-50 rounded hover:bg-sky-700 transition duration-300 px-8 py-2"
         type="submit">{saveButtonContent}</button
       >
+      {JSON.stringify($data)}
+      {JSON.stringify($errors)}
     </form>
   </div>
 {/if}

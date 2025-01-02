@@ -1,3 +1,5 @@
+import { writeTextFile, BaseDirectory } from "@tauri-apps/plugin-fs";
+
 export const store: {
   currentCategory: string;
   todos: Todo[];
@@ -20,4 +22,10 @@ export type Todo = {
 
 export const filterTodos = () => {
   store.filteredTodos = store.todos.filter(store.filteringCondition);
+};
+
+export const writeTodos = async () => {
+  await writeTextFile("remindee.json", JSON.stringify(store.todos), {
+    baseDir: BaseDirectory.AppLocalData,
+  });
 };

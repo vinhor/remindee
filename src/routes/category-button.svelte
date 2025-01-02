@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { store } from "./stores.svelte";
+  import { store, filterTodos } from "./stores.svelte";
+  import type { Todo } from "./stores.svelte";
   import "./../app.css";
   type Props = {
     name: string;
@@ -7,8 +8,10 @@
     darkColor: string;
     background: string;
     darkBackground: string;
+    condition: (todo: Todo) => boolean;
   };
-  let { name, color, darkColor, background, darkBackground }: Props = $props();
+  let { name, color, darkColor, background, darkBackground, condition }: Props =
+    $props();
 
   const decideTheme = () => {
     if (store.currentCategory === name) {
@@ -17,9 +20,14 @@
       return `${color} ${darkColor} hover:bg-zinc-50 hover:dark:bg-zinc-700 cursor-pointer`;
     }
   };
+  const handleClick = () => {
+    store.currentCategory = name;
+    store.filteringCondition = condition;
+    filterTodos();
+  };
 </script>
 
 <button
   class={`font-bold p-2 indent-1 m-1 ml-2 mr-2 rounded transition ${decideTheme()}`}
-  onclick={() => (store.currentCategory = name)}>{name}</button
+  onclick={() => handleClick()}>{name}</button
 >

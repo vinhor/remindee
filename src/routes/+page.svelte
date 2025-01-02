@@ -6,30 +6,23 @@
     BaseDirectory,
   } from "@tauri-apps/plugin-fs";
   import CategoryButton from "./category-button.svelte";
-  import { store } from "./stores.svelte";
+  import { store, filterTodos } from "./stores.svelte";
   import { z } from "zod";
   import { createForm } from "felte";
   import { validator } from "@felte/validator-zod";
+  import TodoItem from "./todo-item.svelte";
   import CustomCheckbox from "./custom-checkbox.svelte";
 
-  type todo = {
-    title: string;
-    isImportant: boolean;
-    category?: string;
-    dueDate?: string;
-    dueTime?: string;
-  };
-
   let todosFile: string;
-  let todos: todo[] | string[] = $state([]);
   let modalOpened = $state(false);
-
+  let time = new Date();
   let saveButtonContent = $state("Save");
 
   const schema = z.object({
     title: z.string().nonempty(),
     isImportant: z.boolean(),
     category: z.string().optional(),
+    wantsDate: z.boolean(),
     dueDate: z.string().date().or(z.literal("")).optional(),
     dueTime: z
       .string()
@@ -42,15 +35,17 @@
     extend: validator({ schema }),
     onSubmit: async (values) => {
       saveButtonContent = "Saving...";
-      todos.push(values);
+      store.todos.push(values);
       await writeTodos();
       modalOpened = false;
       saveButtonContent = "Save";
+      filterTodos();
     },
   });
 
-  onMount(() => {
-    readTodos();
+  onMount(async () => {
+    await readTodos();
+    store.filteredTodos = store.todos;
   });
 
   const readTodos = async () => {
@@ -58,14 +53,14 @@
       todosFile = await readTextFile("remindee.json", {
         baseDir: BaseDirectory.AppLocalData,
       });
-      todos = JSON.parse(todosFile);
+      store.todos = JSON.parse(todosFile);
     } catch {
       await writeTodos();
-      todos = [];
+      store.todos = [];
     }
   };
   const writeTodos = async () => {
-    await writeTextFile("remindee.json", JSON.stringify(todos), {
+    await writeTextFile("remindee.json", JSON.stringify(store.todos), {
       baseDir: BaseDirectory.AppLocalData,
     });
   };
@@ -84,6 +79,7 @@
       darkColor="dark:text-zinc-100"
       background="bg-zinc-700"
       darkBackground="dark:bg-zinc-100"
+      condition={() => true}
     />
     <CategoryButton
       name="Past deadline"
@@ -91,6 +87,16 @@
       darkColor="dark:text-red-400"
       background="bg-red-500"
       darkBackground="dark:text-red-400"
+      condition={(todo) => {
+        if (todo.wantsDate === false) {
+          return false;
+        }
+        const todoTime = todo.dueTime || "00:00";
+        return (
+          new Date(todo.dueDate + "T" + todoTime + ":00").getTime() <
+          time.getTime()
+        );
+      }}
     />
     <CategoryButton
       name="Important"
@@ -98,6 +104,7 @@
       darkColor="dark:text-orange-400"
       background="bg-orange-400"
       darkBackground="dark:text-orange-400"
+      condition={(todo) => todo.isImportant}
     />
     <CategoryButton
       name="Today"
@@ -105,6 +112,15 @@
       darkColor="dark:text-teal-500"
       background="bg-teal-700"
       darkBackground="dark:bg-teal-500"
+      condition={(todo) => {
+        if (todo.wantsDate === false) {
+          return false;
+        }
+        return (
+          new Date(todo.dueDate + "T00:00:00").getTime() ===
+          time.setHours(0, 0, 0, 0)
+        );
+      }}
     />
   </nav>
   <main
@@ -121,6 +137,17 @@
     >
       New reminder
     </button>
+    {#if store.filteredTodos.length > 0}
+      {#each store.filteredTodos as filteredTodo}
+        <ol>
+          <TodoItem todoData={filteredTodo} />
+        </ol>
+      {/each}
+    {:else}
+      No reminders
+      {store.filteredTodos.length}
+      {store.todos.length}
+    {/if}
   </main>
 </div>
 <!-- Modal window -->
@@ -219,4 +246,3 @@
     </form>
   </div>
 {/if}
-{JSON.stringify(todos)}

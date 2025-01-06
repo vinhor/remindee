@@ -1,12 +1,16 @@
 <script lang="ts">
   import { filterTodos, store, writeTodos } from "./stores.svelte";
-  let { index }: { index: number } = $props();
-
-  const todo = store.filteredTodos[index];
+  import type { Todo } from "./stores.svelte";
+  let { todo }: { todo: Todo } = $props();
   const removeTodo = () => {
-    const unfilteredIndex = store.todos.indexOf(todo);
+    const unfilteredIndex = store.todos.findIndex(
+      (t: Todo) => t.uuid === todo.uuid
+    );
+    const filteredIndex = store.filteredTodos.findIndex(
+      (t: Todo) => t.uuid === todo.uuid
+    );
     store.todos.splice(unfilteredIndex, 1);
-    store.filteredTodos.splice(index, 1);
+    store.filteredTodos.splice(filteredIndex, 1);
     filterTodos();
     writeTodos();
   };

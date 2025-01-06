@@ -1,11 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { readTextFile, BaseDirectory } from "@tauri-apps/plugin-fs";
-  import type { Todo } from "./stores.svelte";
-  import { store, filterTodos, writeTodos } from "./stores.svelte";
   import { createForm } from "felte";
   import { validator } from "@felte/validator-vest";
   import { create, test, enforce } from "vest";
+  import { readTextFile, BaseDirectory } from "@tauri-apps/plugin-fs";
+  import { v4 as uuidV4 } from "uuid";
+  import type { Todo } from "./stores.svelte";
+  import { store, filterTodos, writeTodos } from "./stores.svelte";
   import TodoItem from "./todo-item.svelte";
   import CustomCheckbox from "./custom-checkbox.svelte";
   import CategoryButton from "./category-button.svelte";
@@ -41,6 +42,8 @@
     extend: validator({ suite }),
     onSubmit: async (values: Todo) => {
       saveButtonContent = "Saving...";
+      const newTodo = values;
+      newTodo.uuid = uuidV4();
       store.todos.push(values);
       await writeTodos();
       modalOpened = false;
@@ -142,14 +145,12 @@
     </button>
     {#if store.filteredTodos.length > 0}
       <ol class="w-full col-start-1 col-span-2 sm:col-span-3 flex flex-col">
-        {#each store.filteredTodos as _, todoIndex}
-          <TodoItem index={todoIndex} />
+        {#each store.filteredTodos as todo (todo.uuid)}
+          <TodoItem {todo} />
         {/each}
       </ol>
     {:else}
       No reminders
-      {store.filteredTodos.length}
-      {store.todos.length}
     {/if}
   </main>
 </div>
@@ -246,8 +247,6 @@
         class="bg-sky-600 text-zinc-50 rounded hover:bg-sky-700 transition duration-300 px-8 py-2"
         type="submit">{saveButtonContent}</button
       >
-      {JSON.stringify($data)}
-      {JSON.stringify($errors)}
     </form>
   </div>
 {/if}

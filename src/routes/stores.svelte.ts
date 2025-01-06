@@ -1,4 +1,5 @@
 import { writeTextFile, BaseDirectory } from "@tauri-apps/plugin-fs";
+import type { UUIDTypes } from "uuid";
 
 export const store: {
   currentCategory: string;
@@ -15,6 +16,7 @@ export type Todo = {
   title: string;
   isImportant: boolean;
   wantsDate: boolean;
+  uuid: UUIDTypes;
   category?: string;
   dueDate?: string;
   dueTime?: string;

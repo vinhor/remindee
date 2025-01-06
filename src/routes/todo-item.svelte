@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { store, writeTodos } from "./stores.svelte";
+  import { filterTodos, store, writeTodos } from "./stores.svelte";
   let { index }: { index: number } = $props();
 
   const todo = store.filteredTodos[index];
@@ -7,6 +7,7 @@
     const unfilteredIndex = store.todos.indexOf(todo);
     store.todos.splice(unfilteredIndex, 1);
     store.filteredTodos.splice(index, 1);
+    filterTodos();
     writeTodos();
   };
 </script>

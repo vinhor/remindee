@@ -1,7 +1,16 @@
-# Tauri + SvelteKit + TypeScript
-
-This template should help get you started developing with Tauri, SvelteKit and TypeScript in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+# Remindee
+Remindee is a basic todos/reminders app built on top of Svelte, Tauri and Tailwind
+## Instalation
+**Currently there are executables only for Linux and macOS. For Windows, build manually**
+### Manual installation
+If you alredy haven't, install Node.js.
+Clone this repo with:
+```
+git clone https://github.com/vinhor/remindee.git
+cd remindee
+```
+Then build.
+```
+npm i
+npm run tauri build
+```

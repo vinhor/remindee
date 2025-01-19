@@ -15,9 +15,9 @@
 
   const decideTheme = () => {
     if (store.currentCategory === name) {
-      return `text-zinc-50 cursor-auto dark:text-zinc-700 cursor-default ${background} ${darkBackground}`;
+      return `text-zinc-50 cursor-auto dark:text-zinc-700 ${background} ${darkBackground}`;
     } else {
-      return `${color} ${darkColor} hover:bg-zinc-50 hover:dark:bg-zinc-700 cursor-pointer`;
+      return `${color} ${darkColor} hover:bg-zinc-50 hover:dark:bg-zinc-700`;
     }
   };
   const handleClick = () => {
@@ -28,6 +28,6 @@
 </script>
 
 <button
-  class={`font-bold p-2 m-1 ml-2 pl-3 mr-2 rounded transition ${decideTheme()}`}
+  class={`font-bold p-2 m-1 ml-2 pl-3 mr-2 rounded transition cursor-pointer ${decideTheme()}`}
   onclick={() => handleClick()}>{name}</button
 >

@@ -145,13 +145,17 @@
       New reminder
     </button>
     {#if store.filteredTodos.length > 0}
-      <ol class="w-full col-start-1 col-span-2 sm:col-span-3 flex flex-col">
+      <ol class="w-full col-start-1 col-span-2 md:col-span-3 flex flex-col">
         {#each store.filteredTodos as todo (todo.uuid)}
           <TodoItem {todo} />
         {/each}
       </ol>
     {:else}
-      No reminders
+      <p
+        class="col-start-1 col-span-2 md:col-span-3 w-full text-zinc-700 dark:text-zinc-50 font-semibold text-center"
+      >
+        No reminders
+      </p>
     {/if}
   </main>
 </div>

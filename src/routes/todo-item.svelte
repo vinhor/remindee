@@ -42,7 +42,7 @@
     </svg>
   </button>
   <p
-    class="text-zinc-700 dark:text-zinc-50 col-start-2 overflow-x-hidden text-ellipsis text-left text-lg"
+    class="text-zinc-700 dark:text-zinc-50 col-start-2 overflow-x-hidden text-ellipsis text-left text-lg font-medium"
   >
     {todo.title}
   </p>
@@ -74,7 +74,9 @@
     </svg>
   </button>
   {#if todo.dueDate}
-    <p class="row-start-2 col-start-2 text-sm text-zinc-700 dark:text-zinc-50">
+    <p
+      class="row-start-2 col-start-2 text-sm text-zinc-700 dark:text-zinc-50 font-medium"
+    >
       Due: {new Date(todo.dueDate).toLocaleDateString() +
         (todo.dueTime ? " " + todo.dueTime : "")}
     </p>

@@ -10,6 +10,7 @@
   import TodoItem from "./todo-item.svelte";
   import CustomCheckbox from "./custom-checkbox.svelte";
   import CategoryButton from "./category-button.svelte";
+  import "vest/enforce/date";
 
   let todosFile: string;
   let modalOpened = $state(false);
@@ -21,13 +22,13 @@
       enforce(data.title).isNotBlank();
     });
 
-    test("due_date", "Isn't in YYYY-MM-DD", () => {
-      if (data.dueDate === undefined || data.dueDate === null) return true;
+    test("dueDate", "Isn't in YYYY-MM-DD", () => {
+      if (!data.dueDate) return true;
       enforce(data.dueDate).isDate({ format: "YYYY-MM-DD" });
     });
 
-    test("due_time", "Use HH:mm", () => {
-      if (data.dueDate === undefined || data.dueDate === null) return true;
+    test("dueTime", "Use HH:mm", () => {
+      if (!data.dueTime) return true;
       enforce(data.dueTime).matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/);
     });
 

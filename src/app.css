@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-line {
+line,
+path {
   stroke-linecap: round;
 }

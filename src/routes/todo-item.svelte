@@ -50,6 +50,9 @@
     aria-label="Edit reminder {todo.title}"
     title="Edit reminder"
     class="row-start-1 col-start-3 row-span-2 p-2 mr-0 hover:bg-zinc-200 rounded transition hover:dark:bg-zinc-800"
+    onclick={() => {
+      store.editedTodo = todo.uuid;
+    }}
     ><svg
       viewBox="0 0 24 24"
       class="stroke-2 fill-none stroke-zinc-700 dark:stroke-zinc-50 h-6"
